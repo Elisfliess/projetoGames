@@ -25,6 +25,7 @@ public class ControleTelaJogo implements KeyListener, ActionListener, Runnable {
         direita = true;
         pausado = true;
         loop = new Thread(this);
+        atualizarMissao();
 
         this.tela.getStatusPanel().getVoltar().addActionListener(this);
 
@@ -35,6 +36,11 @@ public class ControleTelaJogo implements KeyListener, ActionListener, Runnable {
         loop.start();
     }
 
+    public void stop() {
+        pausado = true;
+        tela.getGamePanel().getTimer().stop();
+    }
+
     private void atualizar() {
         if (cima) {
             tela.getGamePanel().getCobrinha().atualizar(Cobrinha.CIMA);
@@ -43,8 +49,15 @@ public class ControleTelaJogo implements KeyListener, ActionListener, Runnable {
         } else if (esquerda) {
             tela.getGamePanel().getCobrinha().atualizar(Cobrinha.ESQUERDA);
         } else if (direita) {
-            tela.getGamePanel().getCobrinha().atualizar(Cobrinha.DIREITO);
+            tela.getGamePanel().getCobrinha().atualizar(Cobrinha.DIREITA);
         }
+
+public void atualizarMissao() {
+    tela.getGamePanel().getMissao().gerarMissao;
+    tela.getStatusPanel().getMissao().setText(tela.getGamePanel().getMissao().pegarMissao() );
+}
+
+
     }
     private void voltarMenu() {
         stop();
@@ -52,6 +65,25 @@ public class ControleTelaJogo implements KeyListener, ActionListener, Runnable {
         this.tela.setVisible(false);
         this.tela.dispose();
     }
+
+    private boolean colidiu(Elemento a, Elemento b){
+        if ((a.getX()==b.getX())&&(a.getY()==b.getY()))
+             return true;
+        else
+             return false;
+    }
+
+   private void verificarColisao() {
+       for(Alvo alvo:tela.getGamePanel().getMissao().getAlvos()) {
+       if(colidiu(tela.getGamePanel().getCobrinha().getCobrinha().get(0), Alvo)){
+           if(getGamePanel().getMissao().verificarResultado(alvo.getConteudo())) {
+
+           }
+       }
+        
+    }
+
+
     // pressiona tecla
     @Override
 
@@ -63,13 +95,11 @@ public class ControleTelaJogo implements KeyListener, ActionListener, Runnable {
                 throw new RuntimeException(e);
             }
             atualizar();
+            verificarColisao();
         }
     }
 
-    public void stop() {
-        pausado = true;
-        tela.getGamePanel().getTimer().stop();
-    }
+   
 
 
     public void keyPressed(KeyEvent e) {
