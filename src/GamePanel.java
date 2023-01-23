@@ -8,10 +8,11 @@ public class GamePanel extends JPanel implements ActionListener {
     private Cobrinha cobrinha;
     private Timer timer;
     private int velocidade;
+    Private Missao missao;
 
     public GamePanel() {
         this.cobrinha = new Cobrinha (20*5, 20*5, 20, 20 );
-        //    this.alvo = new Alvo (20*15, 20*15, 20, 20, 90);
+        this.missao = new missao(1);
         this.timer = new Timer (velocidade, this);
         this.velocidade = 1000/30;
     }
@@ -26,6 +27,12 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public int getVelocidade() {
         return velocidade;
+    } 
+    
+    public Missao getMissao() {
+        return missao;
+    }
+
     }
 
     @Override
@@ -36,7 +43,9 @@ public class GamePanel extends JPanel implements ActionListener {
         g.setColor(Color.BLACK);
         g.fillRect(0,0,480,480);
 
+        missao.desenhar(g);
         getCobrinha().desenhar(g);
+        
 
     }
 
